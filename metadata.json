@@ -1,0 +1,5 @@
+{
+  "name": "Denkuan Shop AI Assistant",
+  "description": "An AI-powered chat assistant for Denkuan Shop. Users can share product links from any store, and the AI will extract details, allowing them to add items to a local cart and checkout from the original link. The application features a stylish pink and black theme.",
+  "requestFramePermissions": []
+}

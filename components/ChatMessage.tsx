@@ -1,0 +1,50 @@
+
+import React from 'react';
+import type { ChatMessage, Product } from '../types';
+import { MessageType } from '../types';
+import ProductCard from './ProductCard';
+
+interface ChatMessageProps {
+  message: ChatMessage;
+  onAddToCart: (product: Product) => void;
+}
+
+const ChatMessageComponent: React.FC<ChatMessageProps> = ({ message, onAddToCart }) => {
+  const isUser = message.sender === 'user';
+  
+  const AiAvatar = () => (
+    <div className="w-10 h-10 bg-brand-surface rounded-full flex-shrink-0 flex items-center justify-center mr-3">
+       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-pink" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c.225-.01.45-.016.675-.016a8.992 8.992 0 015.61 2.083m-5.61-2.083c.31-.223.635-.425.975-.599a11.96 11.96 0 00-3.513-1.01 11.96 11.96 0 00-3.513 1.01c.34.174.665.376.975.599m6.113 5.367c.36-.223.74-.406 1.14-.555a8.965 8.965 0 00-2.825-3.416m-2.825 3.416a8.965 8.965 0 01-2.825-3.416c.4.15.78.332 1.14.555m5.65 1.162a8.963 8.963 0 00-5.65 0m5.65 0a8.963 8.963 0 012.825 3.416m-2.825-3.416a8.963 8.963 0 00-2.825 3.416m0 0l-2.22 3.863m2.22-3.863a2.25 2.25 0 00-1.591 1.591l-2.22 3.863m4.44-5.454l-1.591-1.591M15 14.5l-1.591-1.591" /></svg>
+    </div>
+  );
+
+  const UserAvatar = () => (
+     <div className="w-10 h-10 bg-brand-surface rounded-full flex-shrink-0 flex items-center justify-center ml-3">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.414a1 1 0 00-1.414-1.414L10.828 15.172a4 4 0 01-5.656-5.656l6.414-6.414a6 6 0 018.486 8.486L13.757 21" /></svg>
+     </div>
+  );
+
+  return (
+    <div className={`flex items-start ${isUser ? 'justify-end' : 'justify-start'}`}>
+      {!isUser && <AiAvatar />}
+      <div className={`max-w-md lg:max-w-lg ${isUser ? 'order-1' : 'order-2'}`}>
+        {message.type === MessageType.PRODUCT ? (
+          <ProductCard product={message.content as Product} onAddToCart={onAddToCart} />
+        ) : (
+          <div
+            className={`px-4 py-3 rounded-lg ${
+              isUser
+                ? 'bg-brand-pink text-white rounded-br-none'
+                : 'bg-brand-surface text-brand-text rounded-bl-none'
+            }`}
+          >
+            <p className="break-words">{message.content as string}</p>
+          </div>
+        )}
+      </div>
+      {isUser && <UserAvatar />}
+    </div>
+  );
+};
+
+export default ChatMessageComponent;
